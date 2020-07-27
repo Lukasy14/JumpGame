@@ -21,156 +21,111 @@ public class PlayerController : MonoBehaviour
     public AudioSource EatAudio;
     public AudioSource DeadAudio;
     public Transform cellingChack;
+    public Transform groundCheck;
 
-    private bool isHurt;
-    //public Transform groundCheck;
+    public bool isHurt;
 
-    //public bool isGround, isJump;
+    public bool isGround;
+    public bool isJump;
 
-    //bool jumpPressed;
-    //int jumpCount;
+    bool jumpPressed;
+    int jumpCount;
     void Start()
     {
         m_rigidbody = GetComponent<Rigidbody2D>();
         m_animator = GetComponent<Animator>();
-    }
+        coll = GetComponent<Collider2D>();
 
-    // void Update()
-    // {
-    //     if(Input.GetButtonDown("Jump") && jumpCount > 0)
-    //     {
-    //         jumpPressed = true;
-    //     }
-    // }
-    // void Update()
-    // {
-        
-    // }
-    void FixedUpdate()
-    {
-        // isGround = Physics2D.OverlapCircle(groundCheck.position, 0.1f, ground);
-
-        //Jump();
-        if (!isHurt)
-        {
-            GroundMovement();
-        }
-
-
-        SwitchAnim();
     }
 
     void Update()
     {
-        Jump();
+        if(Input.GetButtonDown("Jump") && jumpCount > 0)
+        {
+            jumpPressed = true;
+        }
         Crouch();
         CherryNumber.text = Cherry.ToString();
     }
+    void FixedUpdate()
+    {
+        isGround = Physics2D.OverlapCircle(groundCheck.position, 0.1f, ground);
+        if(!isHurt)
+        {
+            GroundMovement();
+            Jump();
+        }
+        SwitchAnim();
+    }
+
 
     void GroundMovement()
     {
-        // 1float horizontalMove = Input.GetAxisRaw("Horizontal");
-        float horizontalMove = Input.GetAxis("Horizontal");
-        float facedircetion = Input.GetAxisRaw("Horizontal");
-        // 1m_rigidbody.velocity = new Vector2(horizontalMove * speed, m_rigidbody.velocity.y);
+        float horizontalMove = Input.GetAxisRaw("Horizontal");
+        m_rigidbody.velocity = new Vector2(horizontalMove * speed, m_rigidbody.velocity.y);
         if (horizontalMove != 0)
         {
-            m_rigidbody.velocity = new Vector2(horizontalMove * speed * Time.fixedDeltaTime, m_rigidbody.velocity.y);
-            // 1transform.localScale = new Vector3(horizontalMove, 1, 1);
-            m_animator.SetFloat("Running", Mathf.Abs(facedircetion));
+            transform.localScale = new Vector3(horizontalMove, 1, 1);
         }
-        if (facedircetion != 0)
-        {
-            transform.localScale = new Vector3(facedircetion, 1, 1);
-        }
-
     }
+
+    void Jump()
+    {
+        if(isGround)
+        {
+            jumpCount = 2;
+            isJump = false;
+        }
+        if(jumpPressed && isGround)
+        {
+            isJump = true;
+            m_rigidbody.velocity = new Vector2(m_rigidbody.velocity.x, jumpforce);
+            jumpCount--;
+            jumpPressed = false;
+            JumpAudio.Play();
+        }
+        else if(jumpPressed && jumpCount > 0 && !isGround)
+        {
+            m_rigidbody.velocity = new Vector2(m_rigidbody.velocity.x, jumpforce);
+            jumpCount--;
+            jumpPressed = false;
+            JumpAudio.Play();
+        }
+    }
+
+
+
 
     void SwitchAnim()
     {
-        if (m_rigidbody.velocity.y < 0.1f && !coll.IsTouchingLayers(ground))
+        m_animator.SetFloat("Running", Mathf.Abs(m_rigidbody.velocity.x));
+        if(isGround)
         {
+            m_animator.SetBool("Falling", false);
+        }
+        else if(!isGround && m_rigidbody.velocity.y > 0)
+        {
+            m_animator.SetBool("Jumping", true);
+        }
+        else if(m_rigidbody.velocity.y < 0)
+        {
+            m_animator.SetBool("Jumping", false);
             m_animator.SetBool("Falling", true);
         }
-        if (m_animator.GetBool("Jumping"))
+        if (isHurt == true)
         {
-            if (m_rigidbody.velocity.y < 0)
-            {
-
-                m_animator.SetBool("Jumping", false);
-                m_animator.SetBool("Falling", true);
-            }
-        }
-        else if (isHurt == true)
-        {
-
+            Debug.Log("Hurt1");
             m_animator.SetBool("Hurt", true);
             m_animator.SetFloat("Running", 0f);
-            if (Mathf.Abs(m_rigidbody.velocity.x) < 0.3f)
+            if (Mathf.Abs(m_rigidbody.velocity.x) < 0.1f)
             {
                 m_animator.SetBool("Hurt", false);
                 isHurt = false;
             }
         }
-        else if (coll.IsTouchingLayers(ground))
-        {
-            m_animator.SetBool("Falling", false);
-        }
-
-
     }
 
-        void Jump()
-        {
-            if (Input.GetButtonDown("Jump") && coll.IsTouchingLayers(ground))
-            {
-            JumpAudio.Play();
-            m_rigidbody.velocity = new Vector2(m_rigidbody.velocity.x, jumpforce * Time.deltaTime);
-            m_animator.SetBool("Jumping", true);
 
-            }
-            Crouch();
-        }
-
-    // void SwitchAnim()
-    // {
-    //     m_animator.SetFloat("Running", Mathf.Abs(m_rigidbody.velocity.x));
-    //     if(isGround)
-    //     {
-    //         m_animator.SetBool("Falling", false);
-    //     }
-    //     else if(!isGround && m_rigidbody.velocity.y < 0)
-    //     {
-    //         m_animator.SetBool("Jumping", true);
-    //     }
-    //     else if(m_rigidbody.velocity.y < 0)
-    //     {
-    //         m_animator.SetBool("Jumping", false);
-    //         m_animator.SetBool("Falling", true);
-    //     }
-    // }
-
-    // void Jump()
-    // {
-    //     if(isGround)
-    //     {
-    //         jumpCount = 1;
-    //         isJump = false;
-    //     }
-    //     if(jumpPressed && isGround)
-    //     {
-    //         isJump = true;
-    //         m_rigidbody.velocity = new Vector2(m_rigidbody.velocity.x, jumpforce);
-    //         jumpCount--;
-    //         jumpPressed = false;
-    //     }
-    //     else if(jumpPressed && jumpCount > 0 && !isGround)
-    //     {
-    //         m_rigidbody.velocity = new Vector2(m_rigidbody.velocity.x, jumpforce);
-    //         jumpCount--;
-    //         jumpPressed = false;
-    //     }
-    // }
 
     private void OnTriggerEnter2D(Collider2D other)
     {

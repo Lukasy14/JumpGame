@@ -39,6 +39,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9040311999822432368}
+  - {fileID: 5744748995825257980}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -107,11 +108,11 @@ Rigidbody2D:
   m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &2033786713175827558
 MonoBehaviour:
@@ -127,8 +128,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coll: {fileID: 9053092374729836800}
   collon: {fileID: 3254102561301468587}
-  speed: 400
-  jumpforce: 650
+  speed: 10
+  jumpforce: 10
   ground:
     serializedVersion: 2
     m_Bits: 256
@@ -139,6 +140,9 @@ MonoBehaviour:
   EatAudio: {fileID: 5293554565365263484}
   DeadAudio: {fileID: 1126054680}
   cellingChack: {fileID: 9040311999822432368}
+  groundCheck: {fileID: 5744748995825257980}
+  isGround: 0
+  isJump: 0
 --- !u!95 &2033786713175827557
 Animator:
   serializedVersion: 3
@@ -214,7 +218,8 @@ AudioSource:
   m_GameObject: {fileID: 2033786713175827555}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: c5acbc8d6e039be4b876e858cd90880f,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 90eae78e8ce85a849b5b0ca11b2de641, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.252
@@ -310,7 +315,8 @@ AudioSource:
   m_GameObject: {fileID: 2033786713175827555}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: c5acbc8d6e039be4b876e858cd90880f,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 1534fc1c46699bd43ac431c838acf6eb, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -406,7 +412,8 @@ AudioSource:
   m_GameObject: {fileID: 2033786713175827555}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: c5acbc8d6e039be4b876e858cd90880f,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: af27795f4a6f94a4491e43f35667947d, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -502,7 +509,8 @@ AudioSource:
   m_GameObject: {fileID: 2033786713175827555}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: c5acbc8d6e039be4b876e858cd90880f,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 96e9ec9e60ae06346a728b988b5c9b1e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -598,7 +606,8 @@ AudioSource:
   m_GameObject: {fileID: 2033786713175827555}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: c5acbc8d6e039be4b876e858cd90880f,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: d99f0f9f3970a124eb486aa70282fed0, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -685,6 +694,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &5231004820706691798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5744748995825257980}
+  m_Layer: 0
+  m_Name: groundcheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5744748995825257980
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5231004820706691798}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.099, y: -1.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2033786712261834115}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6634051127641303590
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,7 +736,7 @@ GameObject:
   m_Layer: 0
   m_Name: celling
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

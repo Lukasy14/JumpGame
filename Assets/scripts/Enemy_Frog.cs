@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy_Frog : Enemy_Die
 {
     private Rigidbody2D m_Rigdbody;
-    private Animator Anim;
+    private Animator Anim1;
     private Collider2D coll;
     public Transform leftpoint;
     public Transform rightpoint;
@@ -20,7 +20,7 @@ public class Enemy_Frog : Enemy_Die
     {
         base.Start();
         m_Rigdbody = GetComponent<Rigidbody2D>();
-        Anim = GetComponent<Animator>();
+        Anim1 = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
         transform.DetachChildren();
         leftx = leftpoint.position.x;
@@ -42,7 +42,7 @@ public class Enemy_Frog : Enemy_Die
         {
             if (coll.IsTouchingLayers(Ground))
             {
-                Anim.SetBool("Jumping", true);
+                Anim1.SetBool("Jumping", true);
                 m_Rigdbody.velocity = new Vector2(-Speed, JumpForce);
                 if (transform.position.x < leftx)
                 {
@@ -56,7 +56,7 @@ public class Enemy_Frog : Enemy_Die
         {
             if (coll.IsTouchingLayers(Ground))
             {
-                Anim.SetBool("Jumping", true);
+                Anim1.SetBool("Jumping", true);
                 m_Rigdbody.velocity = new Vector2(Speed, JumpForce);
                 if (transform.position.x > rightx)
                 {
@@ -70,17 +70,17 @@ public class Enemy_Frog : Enemy_Die
 
     void SwitchAnim()
     {
-        if(Anim.GetBool("Jumping"))
+        if(Anim1.GetBool("Jumping"))
         {
             if(m_Rigdbody.velocity.y < 0.1f)
             {
-                Anim.SetBool("Jumping", false);
-                Anim.SetBool("Falling", true);
+                Anim1.SetBool("Jumping", false);
+                Anim1.SetBool("Falling", true);
             }
         }
-        if(coll.IsTouchingLayers(Ground) && Anim.GetBool("Falling") == true)
+        if(coll.IsTouchingLayers(Ground) && Anim1.GetBool("Falling") == true)
         {
-            Anim.SetBool("Falling", false);
+            Anim1.SetBool("Falling", false);
         }
     }
 
