@@ -16,10 +16,10 @@ public class PlayerController : MonoBehaviour
     public int Cherry = 0;
     public Text CherryNumber;
     private Animator Enemy_Animator;
-    public AudioSource JumpAudio;
-    public AudioSource HurtAudio;
-    public AudioSource EatAudio;
-    public AudioSource DeadAudio;
+    // public AudioSource JumpAudio;
+    // public AudioSource HurtAudio;
+    // public AudioSource EatAudio;
+    // public AudioSource DeadAudio;
     public Transform cellingChack;
     public Transform groundCheck;
 
@@ -82,14 +82,14 @@ public class PlayerController : MonoBehaviour
             m_rigidbody.velocity = new Vector2(m_rigidbody.velocity.x, jumpforce);
             jumpCount--;
             jumpPressed = false;
-            JumpAudio.Play();
+            SoundManager.instance.JumpAudio();
         }
         else if(jumpPressed && jumpCount > 0 && !isGround)
         {
             m_rigidbody.velocity = new Vector2(m_rigidbody.velocity.x, jumpforce);
             jumpCount--;
             jumpPressed = false;
-            JumpAudio.Play();
+            SoundManager.instance.JumpAudio();
         }
     }
 
@@ -132,14 +132,14 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Player");
         if (other.tag == "Collection")
         {
-            EatAudio.Play();
+            SoundManager.instance.CherryAudio();
             other.GetComponent<Animator>().Play("Cherryget");
             
         }
         if(other.tag == "DeadLine")
         {
             GetComponent<AudioSource>().enabled = false;
-            DeadAudio.Play();
+            SoundManager.instance.GameoverAudio();
             Invoke(nameof(Restart), 2f);
         }
 
@@ -160,13 +160,13 @@ public class PlayerController : MonoBehaviour
             {
                 m_rigidbody.velocity = new Vector2(-10, m_rigidbody.velocity.y);
                 isHurt = true;
-                HurtAudio.Play();
+                SoundManager.instance.HurtAudio();
             }
             else if (transform.position.x > other.gameObject.transform.position.x)
             {
                 m_rigidbody.velocity = new Vector2(10, m_rigidbody.velocity.y);
                 isHurt = true;
-                HurtAudio.Play();
+                SoundManager.instance.HurtAudio();
             }
 
         }
