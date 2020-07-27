@@ -25,8 +25,9 @@ public class Enemy_Frog : Enemy_Die
         transform.DetachChildren();
         leftx = leftpoint.position.x;
         rightx = rightpoint.position.x;
-        Destroy(leftpoint);
-        Destroy(rightpoint);
+
+        Destroy(leftpoint.transform.gameObject);
+        Destroy(rightpoint.transform.gameObject);
     }
 
 

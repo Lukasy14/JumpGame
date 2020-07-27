@@ -21,8 +21,8 @@ public class eagle : Enemy_Die
         upY = upPoint.position.y;
         downY = downPoint.position.y;
         transform.DetachChildren();
-        Destroy(upPoint);
-        Destroy(downPoint);
+        Destroy(upPoint.gameObject);
+        Destroy(downPoint.gameObject);
     }
 
     // Update is called once per frame
