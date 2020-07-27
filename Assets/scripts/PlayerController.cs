@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public AudioSource DeadAudio;
     public Transform cellingChack;
 
+    public Joystick joystick;
+
     private bool isHurt;
     //public Transform groundCheck;
 
@@ -70,8 +72,11 @@ public class PlayerController : MonoBehaviour
     void GroundMovement()
     {
         // 1float horizontalMove = Input.GetAxisRaw("Horizontal");
-        float horizontalMove = Input.GetAxis("Horizontal");
-        float facedircetion = Input.GetAxisRaw("Horizontal");
+        //float horizontalMove = Input.GetAxis("Horizontal");
+        float horizontalMove = joystick.Horizontal;
+        //float facedircetion = Input.GetAxisRaw("Horizontal");
+        float facedircetion = joystick.Horizontal;
+
         // 1m_rigidbody.velocity = new Vector2(horizontalMove * speed, m_rigidbody.velocity.y);
         if (horizontalMove != 0)
         {
@@ -79,9 +84,13 @@ public class PlayerController : MonoBehaviour
             // 1transform.localScale = new Vector3(horizontalMove, 1, 1);
             m_animator.SetFloat("Running", Mathf.Abs(facedircetion));
         }
-        if (facedircetion != 0)
+        if (facedircetion > 0f)
         {
-            transform.localScale = new Vector3(facedircetion, 1, 1);
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        if (facedircetion < 0f)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
         }
 
     }
@@ -122,7 +131,7 @@ public class PlayerController : MonoBehaviour
 
         void Jump()
         {
-            if (Input.GetButtonDown("Jump") && coll.IsTouchingLayers(ground))
+            if (joystick.Vertical > 0.5f && coll.IsTouchingLayers(ground))
             {
             JumpAudio.Play();
             m_rigidbody.velocity = new Vector2(m_rigidbody.velocity.x, jumpforce * Time.deltaTime);
@@ -222,7 +231,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!Physics2D.OverlapCircle(cellingChack.position, 0.1f, ground))
         {
-            if (Input.GetButton("Crouch1"))
+            if (joystick.Vertical < -0.5f)
             {
                 m_animator.SetBool("Crouching", true);
                 collon.enabled = false;
